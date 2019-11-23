@@ -1,3 +1,6 @@
+// teachable machine 러닝 AI 기본 format
+
+
 <div>Teachable Machine Image Model</div>
 <button type="button" onclick="init()">Start</button>
 <div id="webcam-container"></div>
@@ -14,7 +17,7 @@
     let model, webcam, labelContainer, maxPredictions;
 
     // Load the image model and setup the webcam
-    async function init() {
+    async function init() {  //init함수에서 모델을 불러옴
         const modelURL = URL + "model.json";
         const metadataURL = URL + "metadata.json";
 
@@ -26,11 +29,12 @@
         maxPredictions = model.getTotalClasses();
 
         // Convenience function to setup a webcam
+        //카메라를 켜고,
         const flip = true; // whether to flip the webcam
         webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
         await webcam.setup(); // request access to the webcam
         await webcam.play();
-        window.requestAnimationFrame(loop);
+        window.requestAnimationFrame(loop); //loop를 도는데, -> line 44
 
         // append elements to the DOM
         document.getElementById("webcam-container").appendChild(webcam.canvas);
@@ -40,19 +44,20 @@
         }
     }
 
-    async function loop() {
+    async function loop() { //카메라 업데이트를 하면서 predict함수를 발동 line51
         webcam.update(); // update the webcam frame
         await predict();
         window.requestAnimationFrame(loop);
     }
 
     // run the webcam image through the image model
-    async function predict() {
+    async function predict() {// predict는 현재 웹캠이미지를 model에 대입해 label classfication 결과를 리턴
         // predict can take in an image, video or canvas html element
         const prediction = await model.predict(webcam.canvas);
         for (let i = 0; i < maxPredictions; i++) {
             const classPrediction =
                 prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+            // 매 예측함수가 돌아갈때마다 classname과, 확률을 리턴한다.
             labelContainer.childNodes[i].innerHTML = classPrediction;
         }
     }
