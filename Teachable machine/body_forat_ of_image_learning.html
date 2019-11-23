@@ -34,7 +34,7 @@
         webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
         await webcam.setup(); // request access to the webcam
         await webcam.play();
-        window.requestAnimationFrame(loop); //loop를 도는데, -> line 44
+        window.requestAnimationFrame(loop); //loop를 도는데, -> line 47
 
         // append elements to the DOM
         document.getElementById("webcam-container").appendChild(webcam.canvas);
@@ -44,7 +44,7 @@
         }
     }
 
-    async function loop() { //카메라 업데이트를 하면서 predict함수를 발동 line51
+    async function loop() { //카메라 업데이트를 하면서 predict함수를 발동 line53
         webcam.update(); // update the webcam frame
         await predict();
         window.requestAnimationFrame(loop);
